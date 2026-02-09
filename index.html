@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>FreePlay - Ad-Free Apps</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0e1a;
+  --card: #161627;
+  --accent: #e94560;
+  --accent2: #0f3460;
+  --green: #2ecc71;
+  --blue: #4fc3f7;
+  --orange: #f39c12;
+  --purple: #9b59b6;
+  --pink: #e91e8f;
+  --text: #e8e8f0;
+  --muted: #6a6a8a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated background */
+.bg-glow {
+  position: fixed; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 40%, rgba(233,69,96,0.06) 0%, transparent 50%),
+              radial-gradient(circle at 70% 60%, rgba(15,52,96,0.08) 0%, transparent 50%);
+  animation: bgdrift 20s ease-in-out infinite alternate;
+  z-index: 0; pointer-events: none;
+}
+@keyframes bgdrift {
+  0% { transform: translate(0,0) rotate(0deg); }
+  100% { transform: translate(30px,-20px) rotate(3deg); }
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.logo {
+  display: inline-block;
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  position: relative;
+}
+.logo .free { color: var(--green); }
+.logo .play { color: var(--text); }
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: super;
+  margin-left: 4px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; }
+  50% { opacity:0.6; }
+}
+.tagline {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+.tagline strong { color: var(--green); font-weight: 600; }
+
+/* STATS BAR */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0 40px;
+  flex-wrap: wrap;
+}
+.stat {
+  text-align: center;
+}
+.stat-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+
+/* SECTION */
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+  padding-left: 4px;
+}
+
+/* APP CARDS */
+.apps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.app-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  display: block;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.app-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.app-card:active {
+  transform: translateY(-1px);
+}
+
+.app-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.app-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.app-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.app-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tag-live { background: rgba(46,204,113,0.15); color: var(--green); }
+.tag-soon { background: rgba(243,156,18,0.15); color: var(--orange); }
+
+/* Card glow effect */
+.app-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 16px 16px 0 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.app-card:hover::before { opacity: 1; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.footer .heart { color: var(--accent); }
+
+/* MANIFESTO */
+.manifesto {
+  background: linear-gradient(135deg, rgba(233,69,96,0.08), rgba(15,52,96,0.08));
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255,255,255,0.04);
+  text-align: center;
+}
+.manifesto h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.manifesto p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.manifesto .noad {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(46,204,113,0.12);
+  color: var(--green);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s forwards;
+}
+@keyframes fadeUp {
+  to { opacity:1; transform:translateY(0); }
+}
+.delay1 { animation-delay: 0.1s; }
+.delay2 { animation-delay: 0.2s; }
+.delay3 { animation-delay: 0.3s; }
+.delay4 { animation-delay: 0.4s; }
+.delay5 { animation-delay: 0.5s; }
+.delay6 { animation-delay: 0.6s; }
+.delay7 { animation-delay: 0.7s; }
+.delay8 { animation-delay: 0.8s; }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header fade-in">
+    <div class="logo">
+      <span class="free">Free</span><span class="play">Play</span>
+      <span class="badge">No Ads</span>
+    </div>
+    <p class="tagline">
+      Apps & games that respect you.<br>
+      <strong>100% free. Zero ads. Forever.</strong>
+    </p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats fade-in delay1">
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Ads shown</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Free forever</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="appCount">1</div>
+      <div class="stat-label">Apps & counting</div>
+    </div>
+  </div>
+
+  <!-- LIVE APPS -->
+  <div class="fade-in delay2">
+    <div class="section-title">🎮 Play Now</div>
+  </div>
+
+  <div class="apps">
+    <a class="app-card fade-in delay3" href="https://iacharya.github.io/sudoku/" target="_blank">
+      <div class="app-icon" style="background:linear-gradient(135deg,#e94560,#c0392b);">🔢</div>
+      <div class="app-name">Sudoku</div>
+      <div class="app-desc">Classic 9×9 puzzle with 3 difficulty levels, hints, notes, undo, and timer.</div>
+      <span class="app-tag tag-live">▶ Play</span>
+      <style>.app-card:nth-child(1)::before{background:linear-gradient(90deg,#e94560,#c0392b);}</style>
+    </a>
+  </div>
+
+  <!-- COMING SOON -->
+  <div class="fade-in delay4">
+    <div class="section-title">🚧 Coming Soon</div>
+  </div>
+
+  <div class="apps">
+    <div class="app-card fade-in delay5" style="opacity:0.6;cursor:default;">
+      <div class="app-icon" style="background:linear-gradient(135deg,#2ecc71,#27ae60);">🔤</div>
+      <div class="app-name">Wordle</div>
+      <div class="app-desc">Guess the 5-letter word in 6 tries. New word every day.</div>
+      <span class="app-tag tag-soon">Coming Soon</span>
+    </div>
+
+    <div class="app-card fade-in delay6" style="opacity:0.6;cursor:default;">
+      <div class="app-icon" style="background:linear-gradient(135deg,#f39c12,#e67e22);">🎯</div>
+      <div class="app-name">2048</div>
+      <div class="app-desc">Slide tiles and merge numbers to reach 2048. Addictively simple.</div>
+      <span class="app-tag tag-soon">Coming Soon</span>
+    </div>
+
+    <div class="app-card fade-in delay7" style="opacity:0.6;cursor:default;">
+      <div class="app-icon" style="background:linear-gradient(135deg,#4fc3f7,#2196f3);">💣</div>
+      <div class="app-name">Minesweeper</div>
+      <div class="app-desc">Uncover the grid without hitting a mine. A timeless classic.</div>
+      <span class="app-tag tag-soon">Coming Soon</span>
+    </div>
+
+    <div class="app-card fade-in delay7" style="opacity:0.6;cursor:default;">
+      <div class="app-icon" style="background:linear-gradient(135deg,#9b59b6,#8e44ad);">🧮</div>
+      <div class="app-name">Calculator</div>
+      <div class="app-desc">Clean, fast calculator with history. No bloat, no tracking.</div>
+      <span class="app-tag tag-soon">Coming Soon</span>
+    </div>
+
+    <div class="app-card fade-in delay8" style="opacity:0.6;cursor:default;">
+      <div class="app-icon" style="background:linear-gradient(135deg,#e91e8f,#c0392b);">⏱️</div>
+      <div class="app-name">Pomodoro Timer</div>
+      <div class="app-desc">Stay focused with 25/5 work-break cycles. Simple and effective.</div>
+      <span class="app-tag tag-soon">Coming Soon</span>
+    </div>
+
+    <div class="app-card fade-in delay8" style="opacity:0.6;cursor:default;">
+      <div class="app-icon" style="background:linear-gradient(135deg,#1abc9c,#16a085);">✅</div>
+      <div class="app-name">To-Do List</div>
+      <div class="app-desc">Simple task manager that works offline. Your data stays on your device.</div>
+      <span class="app-tag tag-soon">Coming Soon</span>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <div class="manifesto fade-in delay8">
+    <h3>Why FreePlay?</h3>
+    <p>
+      Tired of being interrupted by ads every 30 seconds? So are we. 
+      Every app here is built with one goal — to be useful, not profitable. 
+      No ads, no tracking, no subscriptions, no data collection. Just apps that work.
+    </p>
+    <div class="noad">🛡️ Your attention is not for sale</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer fade-in delay8">
+    <p>
+      Made with <span class="heart">♥</span> by <a href="https://github.com/iacharya" target="_blank">iacharya</a><br>
+      All apps are open source on <a href="https://github.com/iacharya" target="_blank">GitHub</a>
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
